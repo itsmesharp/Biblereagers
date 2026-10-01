@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>신약 100일 통독표</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  [hidden]{display:none!important}
+  img{max-width:100%}
+  html,body{margin:0}
+
+  :root{
+    --paper:#FAFAF8;
+    --paper-2:#F1F1ED;
+    --ink:#0C0C0B;
+    --muted:#83837D;
+    --faint:#B6B6AF;
+    --line:#E3E3DE;
+    --mono:'IBM Plex Mono','IBM Plex Sans KR',ui-monospace,SFMono-Regular,monospace;
+    --sans:'IBM Plex Sans','IBM Plex Sans KR',system-ui,-apple-system,Segoe UI,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#0B0B0A;
+      --paper-2:#151513;
+      --ink:#ECECE7;
+      --muted:#8C8C85;
+      --faint:#54544E;
+      --line:#282824;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0B0B0A;
+    --paper-2:#151513;
+    --ink:#ECECE7;
+    --muted:#8C8C85;
+    --faint:#54544E;
+    --line:#282824;
+  }
+
+  *{box-sizing:border-box}
+  html{font-family:var(--sans)}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+    font-size:14px;
+  }
+  h1,h2,p{margin:0}
+  button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+  textarea{font:inherit}
+
+  :focus-visible{outline:1px solid var(--ink);outline-offset:3px}
+  @media (prefers-reduced-motion:no-preference){
+    .chev,#headFill,#bigFill,.gcell{transition:transform .25s ease,width .35s ease,background-color .2s ease,border-color .2s ease}
+  }
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0;
+  }
+
+  /* ---------- top hairline progress ---------- */
+  .topbar{
+    position:fixed;top:0;left:0;right:0;height:3px;
+    background:var(--line);z-index:50;
+  }
+  .topbar span{display:block;height:100%;width:0;background:var(--ink)}
+
+  .view{max-width:720px;margin:0 auto}
+
+  /* ---------- login ---------- */
+  #login{
+    min-height:100dvh;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:48px 28px;
+    max-width:420px;
+  }
+  .mark{color:var(--ink);line-height:0;margin-bottom:40px}
+  #login h1{
+    font-family:var(--mono);
+    font-weight:500;
+    font-size:22px;
+    letter-spacing:.02em;
+    margin:14px 0 0;
+  }
+  #login .lede{
+    color:var(--muted);
+    margin-top:16px;
+    max-width:34ch;
+  }
+  #loginForm{
+    margin-top:44px;
+    padding-top:36px;
+    border-top:1px solid var(--line);
+    display:flex;flex-direction:column;gap:10px;
+  }
+  #loginForm label{
+    font-family:var(--mono);
+    font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--muted);
+  }
+  #nameInput{
+    border:none;
+    border-bottom:1px solid var(--ink);
+    background:transparent;
+    color:var(--ink);
+    padding:9px 2px;
+    font-size:16px;
+    border-radius:0;
+  }
+  #nameInput:focus{outline:none;border-bottom-width:2px;padding-bottom:8px}
+  #loginForm button{
+    align-self:flex-start;
+    margin-top:26px;
+    border:1px solid var(--ink);
+    border-radius:2px;
+    padding:13px 26px;
+    font-family:var(--mono);
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  }
+  #loginForm button:hover{background:var(--ink);color:var(--paper)}
+  .fineprint{
+    margin-top:36px;color:var(--faint);font-size:12px;
+    display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+  }
+  .linkbtn{
+    font-size:12px;color:var(--muted);
+    text-decoration:underline;text-underline-offset:3px;padding:0;
+  }
+  .linkbtn:hover{color:var(--ink)}
+
+  /* ---------- chart header ---------- */
+  #chart{padding:0 24px 140px}
+  .sheet-head{
+    position:sticky;top:0;z-index:20;
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+    padding:34px 0 20px;
+    display:grid;
+    grid-template-columns:1fr auto;
+    align-items:start;
+    gap:16px 20px;
+  }
+  .sheet-head h1{
+    font-family:var(--mono);
+    font-weight:500;font-size:17px;letter-spacing:.02em;
+    margin-top:10px;
+  }
+  #signout{
+    font-family:var(--mono);
+    font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);
+    border:1px solid var(--line);border-radius:2px;
+    padding:8px 12px;
+  }
+  #signout:hover{color:var(--ink);border-color:var(--ink)}
+  .head-progress{grid-column:1 / -1;display:flex;align-items:center;gap:14px;margin-top:4px}
+  .head-progress .bar{flex:1;height:2px;background:var(--line);position:relative}
+  .head-progress .bar span{position:absolute;inset:0 auto 0 0;width:0;background:var(--ink);display:block}
+  .head-progress .count{
+    font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);
+    font-variant-numeric:tabular-nums;white-space:nowrap;
+  }
+
+  /* ---------- day list ---------- */
+  .days{list-style:none;margin:28px 0 0;padding:0}
+  .day{border-top:1px solid var(--line);scroll-margin-top:120px}
+  .day:last-child{border-bottom:1px solid var(--line)}
+  .day-row{display:flex;align-items:center;gap:16px;padding:18px 2px}
+
+  .check{
+    flex:none;
+    width:20px;height:20px;
+    border:1px solid var(--ink);
+    border-radius:2px;
+    position:relative;
+  }
+  .check::after{
+    content:"";
+    position:absolute;left:5px;top:2px;
+    width:6px;height:11px;
+    border:solid var(--paper);
+    border-width:0 1.5px 1.5px 0;
+    transform:rotate(45deg) scale(0);
+  }
+  .day.done .check{background:var(--ink)}
+  .day.done .check::after{transform:rotate(45deg) scale(1)}
+
+  .expand{
+    flex:1;display:flex;align-items:baseline;gap:16px;
+    padding:0;text-align:left;
+  }
+  .daynum{
+    font-family:var(--mono);
+    font-size:12.5px;letter-spacing:.1em;
+    font-variant-numeric:tabular-nums;
+    white-space:nowrap;
+  }
+  .passage{color:var(--muted);font-size:13px;flex:1}
+  .day.done .daynum{color:var(--muted)}
+  .chev{
+    font-family:var(--mono);color:var(--faint);font-size:14px;
+    width:1ch;text-align:center;flex:none;
+  }
+  .day.open .chev{color:var(--ink)}
+
+  .journal{
+    padding:6px 2px 30px 52px;
+    display:flex;flex-direction:column;gap:22px;
+  }
+  .field label{
+    display:block;
+    font-family:var(--mono);
+    font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:9px;
+  }
+  .field textarea{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:3px;
+    background:var(--paper-2);
+    color:var(--ink);
+    padding:13px 14px;
+    font-size:13.5px;line-height:1.65;
+    resize:vertical;
+    min-height:76px;
+    overflow:hidden;
+  }
+  .field textarea:focus{outline:none;border-color:var(--ink)}
+  .field textarea::placeholder{color:var(--faint)}
+
+  /* ---------- summary ---------- */
+  .summary{margin-top:88px;padding-top:34px;border-top:1px solid var(--line)}
+  .readout{
+    display:flex;align-items:baseline;justify-content:space-between;
+    margin:18px 0 14px;
+  }
+  .readout .big{
+    font-family:var(--mono);font-weight:400;font-size:38px;letter-spacing:.01em;
+    font-variant-numeric:tabular-nums;
+  }
+  .readout .big small{font-size:16px;color:var(--muted)}
+  .readout .pct{
+    font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--muted);
+    font-variant-numeric:tabular-nums;
+  }
+  .bigbar{position:relative;height:14px;border:1px solid var(--ink);background:var(--paper)}
+  .bigbar span{position:absolute;inset:0 auto 0 0;width:0;background:var(--ink);display:block}
+  .ticks{
+    display:flex;justify-content:space-between;
+    margin-top:8px;
+    font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--faint);
+    font-variant-numeric:tabular-nums;
+  }
+  .grid-wrap{margin-top:40px}
+  .grid-wrap .eyebrow{margin-bottom:14px}
+  .grid{
+    display:grid;grid-template-columns:repeat(10,1fr);gap:5px;
+    max-width:360px;
+  }
+  .gcell{
+    aspect-ratio:1;
+    border:1px solid var(--line);
+    border-radius:1px;
+    padding:0;
+  }
+  .gcell.on{background:var(--ink);border-color:var(--ink)}
+  .gcell:hover{border-color:var(--ink)}
+
+  @media (max-width:560px){
+    #chart{padding:0 18px 120px}
+    .journal{padding-left:2px}
+    .readout .big{font-size:32px}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar" id="topbar" hidden><span id="headFill2"></span></div>
+
+<section id="login" class="view">
+  <div class="mark" aria-hidden="true">
+    <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+      <circle cx="22" cy="22" r="21" stroke="currentColor" stroke-width="1"></circle>
+      <path d="M22 1 A21 21 0 0 1 43 22" stroke="currentColor" stroke-width="3"></path>
+    </svg>
+  </div>
+  <p class="eyebrow">Scripture Reading · 100 Days</p>
+  <h1>신약 100일 통독표</h1>
+  <p class="lede">매일 정해진 본문을 읽고, 읽은 곳을 표시하고, 묵상 한 줄과 감사 한 가지를 남깁니다.</p>
+
+  <form id="loginForm" autocomplete="off">
+    <label for="nameInput">이름</label>
+    <input id="nameInput" type="text" inputmode="text" maxlength="24" placeholder="이름을 적어 주세요" required>
+    <button type="submit">읽기표 열기</button>
+  </form>
+
+  <p class="fineprint">
+    <span>모든 기록은 이 브라우저에만 저장됩니다.</span>
+    <button type="button" class="linkbtn" id="resetAll" hidden>기록 전체 삭제</button>
+  </p>
+</section>
+
+<main id="chart" class="view" hidden>
+  <header class="sheet-head">
+    <div>
+      <p class="eyebrow">신약 100일 통독</p>
+      <h1 id="who">읽기표</h1>
+    </div>
+    <button id="signout" type="button">이름 변경</button>
+    <div class="head-progress">
+      <span class="bar"><span id="headFill"></span></span>
+      <span class="count" id="headCount">0 / 100</span>
+    </div>
+  </header>
+
+  <ol class="days" id="days"></ol>
+
+  <section class="summary">
+    <p class="eyebrow">진도표</p>
+    <div class="readout">
+      <span class="big" id="bigCount">0<small> / 100</small></span>
+      <span class="pct" id="bigPct">0%</span>
+    </div>
+    <div class="bigbar"><span id="bigFill"></span></div>
+    <div class="ticks"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+
+    <div class="grid-wrap">
+      <p class="eyebrow">일자별 현황</p>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+  "use strict";
+  var KEY="ntplan100:v1";
+  var DAYS=100;
+
+  /* ---- storage ---- */
+  var state={name:"",days:{}};
+  try{
+    var raw=localStorage.getItem(KEY);
+    if(raw){var p=JSON.parse(raw);if(p&&typeof p==="object"){state.name=p.name||"";state.days=p.days||{};}}
+  }catch(e){}
+
+  var saveTimer=null;
+  function save(){
+    try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}
+  }
+  function saveSoon(){
+    if(saveTimer)clearTimeout(saveTimer);
+    saveTimer=setTimeout(save,400);
+  }
+  function ensureDay(n){
+    if(!state.days[n])state.days[n]={done:false,meditation:"",gratitude:""};
+    return state.days[n];
+  }
+
+  /* ---- New Testament 100-day plan (260 chapters) ---- */
+  var NT=[["마태복음",28],["마가복음",16],["누가복음",24],["요한복음",21],["사도행전",28],
+    ["로마서",16],["고린도전서",16],["고린도후서",13],["갈라디아서",6],["에베소서",6],
+    ["빌립보서",4],["골로새서",4],["데살로니가전서",5],["데살로니가후서",3],["디모데전서",6],
+    ["디모데후서",4],["디도서",3],["빌레몬서",1],["히브리서",13],["야고보서",5],
+    ["베드로전서",5],["베드로후서",3],["요한일서",5],["요한이서",1],["요한삼서",1],
+    ["유다서",1],["요한계시록",22]];
+  var chapters=[];
+  NT.forEach(function(bk){for(var c=1;c<=bk[1];c++)chapters.push({b:bk[0],c:c});});
+  var base=Math.floor(chapters.length/DAYS), extra=chapters.length-base*DAYS;
+  function daySize(i){
+    return base+(Math.floor(i*extra/DAYS)!==Math.floor((i+1)*extra/DAYS)?1:0);
+  }
+  var readings=[], idx=0;
+  for(var i=0;i<DAYS;i++){
+    var size=daySize(i), s=chapters[idx], e=chapters[idx+size-1];
+    idx+=size;
+    readings.push(fmtRange(s,e));
+  }
+  function fmtRange(s,e){
+    if(s.b===e.b)return s.c===e.c?(s.b+" "+s.c+"장"):(s.b+" "+s.c+"–"+e.c+"장");
+    return s.b+" "+s.c+"장 – "+e.b+" "+e.c+"장";
+  }
+
+  function esc(t){
+    return String(t).replace(/[&<>"]/g,function(m){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[m];
+    });
+  }
+  function pad3(n){return n<10?"00"+n:n<100?"0"+n:""+n;}
+
+  /* ---- elements ---- */
+  var $=function(id){return document.getElementById(id);};
+  var loginView=$("login"), chartView=$("chart"), topbar=$("topbar");
+  var daysEl=$("days"), gridEl=$("grid");
+  var cells=[];
+
+  /* ---- build day rows ---- */
+  var built=false;
+  function buildDays(){
+    if(built)return;
+    var frag=document.createDocumentFragment();
+    for(var n=1;n<=DAYS;n++){
+      var d=state.days[n]||{};
+      var li=document.createElement("li");
+      li.className="day"+(d.done?" done":"");
+      li.dataset.n=n;
+      li.innerHTML=
+        '<div class="day-row">'+
+          '<button class="check" type="button" aria-pressed="'+(d.done?"true":"false")+'" aria-label="DAY '+n+' 읽음 표시"></button>'+
+          '<button class="expand" type="button" aria-expanded="false">'+
+            '<span class="daynum">DAY '+pad3(n)+'</span>'+
+            '<span class="passage">'+esc(readings[n-1])+'</span>'+
+            '<span class="chev" aria-hidden="true">+</span>'+
+          '</button>'+
+        '</div>'+
+        '<div class="journal" hidden>'+
+          '<div class="field"><label>묵상</label>'+
+            '<textarea data-field="meditation" placeholder="오늘 말씀에서 마음에 남은 구절과 묵상을 적어 보세요.">'+esc(d.meditation||"")+'</textarea></div>'+
+          '<div class="field"><label>오늘의 감사</label>'+
+            '<textarea data-field="gratitude" placeholder="오늘 감사한 일 한 가지.">'+esc(d.gratitude||"")+'</textarea></div>'+
+        '</div>';
+      frag.appendChild(li);
+    }
+    daysEl.appendChild(frag);
+
+    for(var g=1;g<=DAYS;g++){
+      var b=document.createElement("button");
+      b.type="button";b.className="gcell";b.dataset.n=g;
+      b.setAttribute("aria-label","DAY "+g);
+      gridEl.appendChild(b);
+      cells.push(b);
+    }
+    built=true;
+  }
+
+  function autosize(ta){
+    ta.style.height="auto";
+    ta.style.height=Math.max(ta.scrollHeight,76)+"px";
+  }
+
+  function openDay(li,open){
+    var j=li.querySelector(".journal");
+    var btn=li.querySelector(".expand");
+    j.hidden=!open;
+    btn.setAttribute("aria-expanded",open?"true":"false");
+    li.classList.toggle("open",open);
+    li.querySelector(".chev").textContent=open?"–":"+";
+    if(open){
+      j.querySelectorAll("textarea").forEach(autosize);
+    }
+  }
+
+  /* ---- progress ---- */
+  function countDone(){
+    var c=0;
+    for(var n=1;n<=DAYS;n++)if(state.days[n]&&state.days[n].done)c++;
+    return c;
+  }
+  function updateProgress(){
+    var done=countDone();
+    var pct=done; // out of 100
+    $("headFill").style.width=pct+"%";
+    $("headFill2").style.width=pct+"%";
+    $("headCount").textContent=done+" / "+DAYS;
+    $("bigCount").innerHTML=done+'<small> / '+DAYS+'</small>';
+    $("bigPct").textContent=pct+"%";
+    $("bigFill").style.width=pct+"%";
+    for(var n=1;n<=DAYS;n++){
+      if(cells[n-1])cells[n-1].classList.toggle("on",!!(state.days[n]&&state.days[n].done));
+    }
+  }
+
+  /* ---- events ---- */
+  daysEl.addEventListener("click",function(ev){
+    var chk=ev.target.closest(".check");
+    if(chk){
+      var li=chk.closest(".day"), n=li.dataset.n;
+      var d=ensureDay(n);
+      d.done=!d.done;
+      li.classList.toggle("done",d.done);
+      chk.setAttribute("aria-pressed",d.done?"true":"false");
+      updateProgress();
+      saveSoon();
+      return;
+    }
+    var exp=ev.target.closest(".expand");
+    if(exp){
+      var li2=exp.closest(".day");
+      openDay(li2,exp.getAttribute("aria-expanded")!=="true");
+    }
+  });
+
+  daysEl.addEventListener("input",function(ev){
+    var ta=ev.target.closest("textarea[data-field]");
+    if(!ta)return;
+    var n=ta.closest(".day").dataset.n;
+    ensureDay(n)[ta.dataset.field]=ta.value;
+    autosize(ta);
+    saveSoon();
+  });
+  daysEl.addEventListener("change",function(ev){
+    if(ev.target.closest("textarea[data-field]"))save();
+  });
+
+  gridEl.addEventListener("click",function(ev){
+    var c=ev.target.closest(".gcell");
+    if(!c)return;
+    var li=daysEl.querySelector('.day[data-n="'+c.dataset.n+'"]');
+    if(!li)return;
+    if(li.classList.contains("open")===false)openDay(li,true);
+    li.scrollIntoView({behavior:"smooth",block:"start"});
+  });
+
+  /* ---- views ---- */
+  function showChart(){
+    buildDays();
+    $("who").textContent=state.name+" 님의 읽기표";
+    updateProgress();
+    loginView.hidden=true;
+    chartView.hidden=false;
+    topbar.hidden=false;
+    // open first unread day
+    var first=0;
+    for(var n=1;n<=DAYS;n++){if(!(state.days[n]&&state.days[n].done)){first=n;break;}}
+    if(first){
+      var li=daysEl.querySelector('.day[data-n="'+first+'"]');
+      if(li)openDay(li,true);
+    }
+  }
+  function showLogin(){
+    chartView.hidden=true;
+    topbar.hidden=true;
+    loginView.hidden=false;
+    $("nameInput").value=state.name||"";
+    $("resetAll").hidden=!(state.name||Object.keys(state.days).length);
+    $("nameInput").focus();
+  }
+
+  $("loginForm").addEventListener("submit",function(ev){
+    ev.preventDefault();
+    var v=$("nameInput").value.trim();
+    if(!v)return;
+    state.name=v;
+    save();
+    showChart();
+    window.scrollTo(0,0);
+  });
+
+  $("signout").addEventListener("click",function(){
+    showLogin();
+    window.scrollTo(0,0);
+  });
+
+  $("resetAll").addEventListener("click",function(){
+    if(!confirm("모든 이름·체크·묵상·감사 기록을 삭제할까요? 되돌릴 수 없습니다."))return;
+    state={name:"",days:{}};
+    try{localStorage.removeItem(KEY);}catch(e){}
+    location.reload();
+  });
+
+  /* ---- boot ---- */
+  if(state.name)showChart();
+  else showLogin();
+})();
+</script>
+
+</body>
+</html>
